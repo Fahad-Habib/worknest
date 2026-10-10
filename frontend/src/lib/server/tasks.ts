@@ -1,17 +1,6 @@
 import { authFetch } from './authFetch'
 import type { Task, TaskApi } from '@/types/task'
-
-
-function mapTask(task: TaskApi): Task {
-  return {
-    id: task.id,
-    projectId: task.project_id,
-    title: task.title,
-    description: task.description,
-    priority: task.priority,
-    status: task.status,
-  }
-}
+import mapTask from '@/lib/mappers/task';
 
 
 export async function getProjectTasks(projectId: string): Promise<Task[]> {
@@ -24,4 +13,24 @@ export async function getProjectTasks(projectId: string): Promise<Task[]> {
   const responseData: TaskApi[] = await response.json()
 
   return responseData.map(mapTask)
+}
+
+
+export async function createTask(projectId: number, taskData: Omit<Task, 'id' | 'projectId'>): Promise<Task> {
+  const response = await authFetch(
+    `/projects/${projectId}/tasks/`,
+    {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(taskData),
+    }
+  )
+
+  if (!response.ok) {
+    throw new Error('Failed to create task')
+  }
+
+  const responseData: TaskApi = await response.json()
+
+  return mapTask(responseData)
 }
