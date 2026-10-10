@@ -1,0 +1,15 @@
+from rest_framework import serializers
+
+from core.models import Project, Task
+
+
+class ProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ('id', 'name', 'description', 'created_at')
+
+
+class TaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = ('id', 'project_id', 'title', 'description', 'priority', 'status')
