@@ -11,6 +11,22 @@ export async function getProjects(): Promise<Project[]> {
   return response.json()
 }
 
+export async function createProject(
+  projectData: Omit<Project, "id">
+): Promise<Project> {
+  const response = await authFetch(`/projects/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(projectData),
+  })
+
+  if (!response.ok) {
+    throw new Error("Failed to create project")
+  }
+
+  return response.json()
+}
+
 export async function getProject(projectId: string): Promise<Project | null> {
   const response = await authFetch(`/projects/${projectId}`)
 
