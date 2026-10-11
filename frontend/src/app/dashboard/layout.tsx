@@ -1,17 +1,7 @@
 import Sidebar from "@/components/dashboard/Sidebar"
 import { authFetch } from "@/lib/server/authFetch"
+import { getCurrentUser } from "@/lib/server/users"
 import { notFound, redirect } from "next/navigation"
-
-
-async function getCurrentUser() {
-  const response = await authFetch('/users/me/')
-
-  if (!response.ok) {
-    return null
-  }
-
-  return response.json()
-}
 
 
 export default async function DashboardLayout({ children, }: {children: React.ReactNode}) {
