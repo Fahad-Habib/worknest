@@ -1,18 +1,20 @@
-from rest_framework.generics import ListAPIView, RetrieveAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
-
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
 from core.models import Project, Task
 from core.serializers import ProjectSerializer, TaskSerializer
 
 
-class ProjectListAPIView(ListAPIView):
+class ProjectListCreateAPIView(ListCreateAPIView):
     serializer_class = ProjectSerializer
 
     def get_queryset(self):
         return Project.objects.filter(user=self.request.user)
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
-class ProjectDetailAPIView(RetrieveAPIView):
+
+class ProjectRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = ProjectSerializer
 
     def get_queryset(self):
