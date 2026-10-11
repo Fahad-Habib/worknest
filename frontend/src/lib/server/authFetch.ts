@@ -14,7 +14,9 @@ export async function authFetch(
   const accessToken = cookieStore.get('access_token')?.value
 
   if (!accessToken) {
-    redirect('/login')
+    return new Response(null, {
+      status: 401,
+    })
   }
 
   return fetch(`${API_URL}${path}`, {

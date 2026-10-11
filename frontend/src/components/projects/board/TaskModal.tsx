@@ -1,26 +1,46 @@
 'use client'
 
-import Select from "@/components/ui/Select"
-import { Task, TaskPriority, TaskStatus } from "@/types/task"
-import { SubmitEvent, useState } from "react"
+import { useState } from 'react'
+import type { SubmitEvent } from 'react'
 
+import Button from '@/components/ui/Button'
+import Input from '@/components/ui/Input'
+import Select from '@/components/ui/Select'
+import Textarea from '@/components/ui/Textarea'
+
+import type {
+  Task,
+  TaskPriority,
+  TaskStatus,
+} from '@/types/task'
 
 type TaskModalProps = {
   onClose: () => void
-  onSubmit: (task: Omit<Task, 'id' | 'projectId'>) => void
+  onSubmit: (
+    task: Omit<Task, 'id' | 'projectId'>
+  ) => void
 }
 
+export default function TaskModal({
+  onClose,
+  onSubmit,
+}: TaskModalProps) {
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [priority, setPriority] =
+    useState<TaskPriority>('medium')
+  const [status, setStatus] =
+    useState<TaskStatus>('todo')
 
-export default function TaskModal({ onClose, onSubmit }: TaskModalProps) {
-  const [title, setTitle] = useState<string>('')
-  const [description, setDescription] = useState<string>('')
-  const [priority, setPriority] = useState<TaskPriority>('medium')
-  const [status, setStatus] = useState<TaskStatus>('todo')
-
-  function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
+  function handleSubmit(
+    event: SubmitEvent<HTMLFormElement>
+  ) {
     event.preventDefault()
 
-    const submittedTask: Omit<Task, 'id' | 'projectId'> = {
+    const submittedTask: Omit<
+      Task,
+      'id' | 'projectId'
+    > = {
       title: title.trim(),
       description: description.trim(),
       priority,
@@ -46,93 +66,93 @@ export default function TaskModal({ onClose, onSubmit }: TaskModalProps) {
 
           <button
             type="button"
-            className="rounded-lg px-3 py-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
             onClick={onClose}
+            className="rounded-lg px-3 py-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
           >
             ✕
           </button>
         </div>
 
-        <form className="space-y-5" onSubmit={handleSubmit}>
-          <div>
-            <label
-              htmlFor="title"
-              className="mb-2 block text-sm font-medium text-slate-700"
-            >
-              Title
-            </label>
+        <form
+          className="space-y-5"
+          onSubmit={handleSubmit}
+        >
+          <Input
+            id="title"
+            label="Title"
+            type="text"
+            placeholder="Enter task title"
+            value={title}
+            onChange={event =>
+              setTitle(event.target.value)
+            }
+            required
+            autoFocus
+          />
 
-            <input
-              id="title"
-              type="text"
-              placeholder="Enter task title"
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
-              value={title}
-              onChange={(event) => setTitle(event.target.value)}
-              required
-              autoFocus
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="description"
-              className="mb-2 block text-sm font-medium text-slate-700"
-            >
-              Description
-            </label>
-
-            <textarea
-              id="description"
-              rows={4}
-              placeholder="Enter task description"
-              className="w-full resize-none rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
-              value={description}
-              onChange={(event) => setDescription(event.target.value)}
-            />
-          </div>
+          <Textarea
+            id="description"
+            label="Description"
+            rows={4}
+            placeholder="Enter task description"
+            value={description}
+            onChange={event =>
+              setDescription(event.target.value)
+            }
+          />
 
           <div className="grid grid-cols-2 gap-4">
-              <Select
-                id="priority"
-                label="Priority"
-                value={priority}
-                onChange={event => setPriority(event.target.value as TaskPriority)}
-                options={[
-                  { label: 'Low', value: 'low' },
-                  { label: 'Medium', value: 'medium' },
-                  { label: 'High', value: 'high' },
-                ]}
-              />
+            <Select
+              id="priority"
+              label="Priority"
+              value={priority}
+              onChange={event =>
+                setPriority(
+                  event.target.value as TaskPriority
+                )
+              }
+              options={[
+                { label: 'Low', value: 'low' },
+                { label: 'Medium', value: 'medium' },
+                { label: 'High', value: 'high' },
+              ]}
+            />
 
-              <Select
-                id="status"
-                label="Status"
-                value={status}
-                onChange={event => setStatus(event.target.value as TaskStatus)}
-                options={[
-                  { label: 'Todo', value: 'todo' },
-                  { label: 'In Progress', value: 'in-progress' },
-                  { label: 'Done', value: 'done' },
-                ]}
-              />
+            <Select
+              id="status"
+              label="Status"
+              value={status}
+              onChange={event =>
+                setStatus(
+                  event.target.value as TaskStatus
+                )
+              }
+              options={[
+                { label: 'Todo', value: 'todo' },
+                {
+                  label: 'In Progress',
+                  value: 'in-progress',
+                },
+                { label: 'Done', value: 'done' },
+              ]}
+            />
           </div>
 
           <div className="flex justify-end gap-3 border-t border-slate-200 pt-5">
-            <button
+            <Button
               type="button"
-              className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+              variant="secondary"
               onClick={onClose}
             >
               Cancel
-            </button>
+            </Button>
 
-            <button
+            <Button
               type="submit"
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-500"
+              variant="primary"
             >
               Add Task
-            </button>
+            </Button>
           </div>
         </form>
       </div>
