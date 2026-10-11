@@ -1,6 +1,6 @@
-import { getCurrentUser } from '@/lib/server/users'
-import Button from '@/components/ui/Button'
-import Select from '@/components/ui/Select'
+import { getCurrentUser } from "@/lib/server/users"
+import Button from "@/components/ui/Button"
+import Select from "@/components/ui/Select"
 
 export default async function SettingsPage() {
   const user = await getCurrentUser()
@@ -20,9 +20,7 @@ export default async function SettingsPage() {
       <div className="space-y-6">
         <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
           <div className="mb-6">
-            <h2 className="text-lg font-semibold text-slate-900">
-              Profile
-            </h2>
+            <h2 className="text-lg font-semibold text-slate-900">Profile</h2>
 
             <p className="mt-1 text-sm text-slate-500">
               Your personal account information.
@@ -91,16 +89,16 @@ export default async function SettingsPage() {
               disabled
               options={[
                 {
-                  label: 'Light',
-                  value: 'light',
+                  label: "Light",
+                  value: "light",
                 },
                 {
-                  label: 'Dark',
-                  value: 'dark',
+                  label: "Dark",
+                  value: "dark",
                 },
                 {
-                  label: 'System',
-                  value: 'system',
+                  label: "System",
+                  value: "system",
                 },
               ]}
             />
@@ -124,10 +122,7 @@ export default async function SettingsPage() {
             </p>
           </div>
 
-          <Button
-            variant="danger"
-            disabled
-          >
+          <Button variant="danger" disabled>
             Delete Account
           </Button>
         </section>

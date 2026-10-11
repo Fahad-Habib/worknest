@@ -1,14 +1,10 @@
-import Link from 'next/link'
+import Link from "next/link"
 
-import { getProjects } from '@/lib/server/projects'
-import { getCurrentUser } from '@/lib/server/users'
-
+import { getProjects } from "@/lib/server/projects"
+import { getCurrentUser } from "@/lib/server/users"
 
 export default async function DashboardPage() {
-  const [user, projects] = await Promise.all([
-    getCurrentUser(),
-    getProjects(),
-  ])
+  const [user, projects] = await Promise.all([getCurrentUser(), getProjects()])
 
   const recentProjects = projects.slice(0, 3)
 
@@ -26,9 +22,7 @@ export default async function DashboardPage() {
 
       <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
         <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <p className="text-sm font-medium text-slate-500">
-            Projects
-          </p>
+          <p className="text-sm font-medium text-slate-500">Projects</p>
 
           <p className="mt-2 text-3xl font-bold text-slate-900">
             {projects.length}
@@ -36,9 +30,7 @@ export default async function DashboardPage() {
         </div>
 
         <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <p className="text-sm font-medium text-slate-500">
-            Active Projects
-          </p>
+          <p className="text-sm font-medium text-slate-500">Active Projects</p>
 
           <p className="mt-2 text-3xl font-bold text-slate-900">
             {projects.length}
@@ -46,13 +38,9 @@ export default async function DashboardPage() {
         </div>
 
         <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <p className="text-sm font-medium text-slate-500">
-            Completed Tasks
-          </p>
+          <p className="text-sm font-medium text-slate-500">Completed Tasks</p>
 
-          <p className="mt-2 text-3xl font-bold text-slate-900">
-            0
-          </p>
+          <p className="mt-2 text-3xl font-bold text-slate-900">0</p>
         </div>
       </div>
 
@@ -78,9 +66,7 @@ export default async function DashboardPage() {
 
         {recentProjects.length === 0 ? (
           <div className="rounded-xl border border-dashed border-slate-300 bg-white p-10 text-center">
-            <h3 className="font-semibold text-slate-900">
-              No projects yet
-            </h3>
+            <h3 className="font-semibold text-slate-900">No projects yet</h3>
 
             <p className="mt-1 text-sm text-slate-500">
               Create your first project to get started.
@@ -88,15 +74,13 @@ export default async function DashboardPage() {
           </div>
         ) : (
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {recentProjects.map(project => (
+            {recentProjects.map((project) => (
               <Link
                 key={project.id}
                 href={`/dashboard/projects/${project.id}`}
                 className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               >
-                <h3 className="font-semibold text-slate-900">
-                  {project.name}
-                </h3>
+                <h3 className="font-semibold text-slate-900">{project.name}</h3>
 
                 <p className="mt-2 text-sm text-slate-500">
                   {project.description}

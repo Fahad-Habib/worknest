@@ -1,6 +1,6 @@
-export type TaskPriority = 'low' | 'medium' | 'high'
+export type TaskPriority = "low" | "medium" | "high"
 
-export type TaskStatus = 'todo' | 'in-progress' | 'done'
+export type TaskStatus = "todo" | "in-progress" | "done"
 
 export type TaskApi = {
   id: number

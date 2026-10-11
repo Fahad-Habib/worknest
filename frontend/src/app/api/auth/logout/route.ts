@@ -1,21 +1,20 @@
-import { NextResponse } from 'next/server'
-
+import { NextResponse } from "next/server"
 
 export async function POST() {
   const response = NextResponse.json({
     success: true,
   })
 
-  response.cookies.set('access_token', '', {
+  response.cookies.set("access_token", "", {
     httpOnly: true,
     expires: new Date(0),
-    path: '/',
+    path: "/",
   })
 
-  response.cookies.set('refresh_token', '', {
+  response.cookies.set("refresh_token", "", {
     httpOnly: true,
     expires: new Date(0),
-    path: '/',
+    path: "/",
   })
 
   return response

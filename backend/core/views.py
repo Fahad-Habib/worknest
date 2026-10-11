@@ -33,4 +33,4 @@ class TaskRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = TaskSerializer
 
     def get_queryset(self):
-        return Task.objects.filter(user=self.request.user, project_id=self.kwargs['project_id'])
+        return Task.objects.filter(project__user=self.request.user, project_id=self.kwargs['project_id'])

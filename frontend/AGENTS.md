@@ -22,10 +22,10 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Prefer small, incremental changes.
 
 When multiple solutions are possible, prefer the one that:
+
 1. is easiest to understand,
 2. introduces the least additional complexity,
 3. fits the existing architecture.
-
 
 ## Stack
 
