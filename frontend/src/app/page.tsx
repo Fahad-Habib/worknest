@@ -1,11 +1,11 @@
-import Link from 'next/link'
+import Link from "next/link"
 
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
       <section className="mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 py-20 lg:px-8">
         <div className="max-w-3xl">
-          <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-indigo-400">
+          <p className="mb-4 text-sm font-semibold tracking-[0.2em] text-indigo-400 uppercase">
             WorkNest
           </p>
 
@@ -16,8 +16,8 @@ export default function HomePage() {
           </h1>
 
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-            A simple project management workspace for organizing tasks,
-            tracking progress, and keeping your work in one place.
+            A simple project management workspace for organizing tasks, tracking
+            progress, and keeping your work in one place.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4">
@@ -39,9 +39,7 @@ export default function HomePage() {
 
         <div className="mt-20 grid gap-5 md:grid-cols-3">
           <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-            <h2 className="text-lg font-semibold">
-              Projects
-            </h2>
+            <h2 className="text-lg font-semibold">Projects</h2>
 
             <p className="mt-2 text-sm leading-6 text-slate-400">
               Keep related work grouped into focused projects.
@@ -49,9 +47,7 @@ export default function HomePage() {
           </div>
 
           <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-            <h2 className="text-lg font-semibold">
-              Kanban Boards
-            </h2>
+            <h2 className="text-lg font-semibold">Kanban Boards</h2>
 
             <p className="mt-2 text-sm leading-6 text-slate-400">
               Move tasks between Todo, In Progress, and Done.
@@ -59,9 +55,7 @@ export default function HomePage() {
           </div>
 
           <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-            <h2 className="text-lg font-semibold">
-              Priorities
-            </h2>
+            <h2 className="text-lg font-semibold">Priorities</h2>
 
             <p className="mt-2 text-sm leading-6 text-slate-400">
               Keep important work visible with clear task priorities.

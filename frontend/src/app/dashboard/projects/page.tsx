@@ -1,7 +1,6 @@
-import ProjectCard from '@/components/projects/ProjectCard'
-import Button from '@/components/ui/Button'
-import { getProjects } from '@/lib/server/projects'
-
+import ProjectCard from "@/components/projects/ProjectCard"
+import Button from "@/components/ui/Button"
+import { getProjects } from "@/lib/server/projects"
 
 export default async function ProjectsPage() {
   const projects = await getProjects()
@@ -19,17 +18,12 @@ export default async function ProjectsPage() {
           </p>
         </div>
 
-        <Button variant='primary'>
-          New Project
-        </Button>
+        <Button variant="primary">New Project</Button>
       </div>
 
       <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {projects.map(project => (
-          <ProjectCard
-            key={project.id}
-            project={project}
-          />
+        {projects.map((project) => (
+          <ProjectCard key={project.id} project={project} />
         ))}
       </div>
     </div>

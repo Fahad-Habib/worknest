@@ -1,32 +1,30 @@
-'use client'
+"use client"
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 
-import Button from '@/components/ui/Button'
-import Input from '@/components/ui/Input'
+import Button from "@/components/ui/Button"
+import Input from "@/components/ui/Input"
 
 export default function LoginForm() {
   const router = useRouter()
 
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
 
-  async function handleSubmit(
-    event: React.SubmitEvent<HTMLFormElement>
-  ) {
+  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
 
     setLoading(true)
-    setError('')
+    setError("")
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           username,
@@ -35,14 +33,14 @@ export default function LoginForm() {
       })
 
       if (!response.ok) {
-        setError('Invalid username or password')
+        setError("Invalid username or password")
         return
       }
 
-      router.push('/dashboard')
+      router.push("/dashboard")
       router.refresh()
     } catch {
-      setError('Something went wrong. Please try again.')
+      setError("Something went wrong. Please try again.")
     } finally {
       setLoading(false)
     }
@@ -61,16 +59,13 @@ export default function LoginForm() {
           </p>
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-5"
-        >
+        <form onSubmit={handleSubmit} className="space-y-5">
           <Input
             id="username"
             label="Username"
             type="text"
             value={username}
-            onChange={event => setUsername(event.target.value)}
+            onChange={(event) => setUsername(event.target.value)}
             required
             autoComplete="username"
           />
@@ -80,24 +75,16 @@ export default function LoginForm() {
             label="Password"
             type="password"
             value={password}
-            onChange={event => setPassword(event.target.value)}
+            onChange={(event) => setPassword(event.target.value)}
             required
             autoComplete="current-password"
           />
 
-          {error && (
-            <p className="text-sm text-red-600">
-              {error}
-            </p>
-          )}
+          {error && <p className="text-sm text-red-600">{error}</p>}
 
-          <div className='flex justify-center'>
-            <Button
-              type="submit"
-              disabled={loading}
-              variant="primary"
-            >
-              {loading ? 'Signing in...' : 'Sign in'}
+          <div className="flex justify-center">
+            <Button type="submit" disabled={loading} variant="primary">
+              {loading ? "Signing in..." : "Sign in"}
             </Button>
           </div>
         </form>
