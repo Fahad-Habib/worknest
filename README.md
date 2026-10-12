@@ -12,9 +12,10 @@ React and Django patterns.
 - Project creation, editing, and deletion
 - Kanban-style task board with Todo, In Progress, and Done columns
 - Task titles, descriptions, priorities, and status updates
-- JWT-based sign-in, sign-out, and token refresh flows
+- Backend-owned, HTTP-only JWT cookie authentication with sign-in, sign-out,
+  and token refresh flows
 - Per-user ownership scoping for projects and tasks
-- Server-side data fetching and API route handlers in Next.js
+- Direct, credentialed browser requests to the Django REST API
 - Reusable TypeScript UI components styled with Tailwind CSS
 
 ## Tech stack
@@ -31,37 +32,38 @@ React and Django patterns.
 
 ```mermaid
 flowchart LR
-  B[Browser] -->|HTTP-only auth cookies| N[Next.js app]
-  N -->|BFF route handlers / server utilities| D[Django REST API]
+  B[Browser] -->|Loads UI| N[Next.js app]
+  B -->|Credentialed API requests\nHTTP-only JWT cookies| D[Django REST API]
   D --> S[(SQLite)]
 ```
 
-The frontend uses a small BFF-style layer: browser interactions go through
-Next.js route handlers, while server utilities call the Django API with a JWT
-bearer token. This keeps tokens out of client-side JavaScript and gives the
-frontend a single, same-origin interface.
+### Authentication
 
-### Intentional authentication transition
+Django owns the complete authentication-cookie lifecycle. On login it issues
+access and refresh JWTs as HTTP-only cookies; protected API requests are
+authenticated from the access-token cookie; the refresh endpoint renews the
+access token when needed; and logout clears both cookies. The frontend sends
+credentialed requests but cannot read the token values from JavaScript.
 
-The current BFF architecture is **intentional**. Next.js currently receives
-JWTs from Django, stores them in HTTP-only cookies, refreshes access tokens
-server-side, and proxies authenticated operations to the API.
+This replaces the earlier BFF approach. The Next.js application no longer
+stores or proxies tokens, leaving the Django API as the single source of truth
+for authentication. CORS and trusted-origin settings allow the local Next.js
+application to make these credentialed requests during development.
 
-This is an intermediate architecture, not an accidental duplication of auth
-responsibilities. The planned direction is for Django to own authentication
-cookies directly, so the backend becomes the source of truth for issuing,
-refreshing, and clearing auth cookies. The BFF layer will then be simplified
-or removed where it no longer provides value.
+### Backend scope
+
+The API is deliberately lean in product scope while demonstrating core
+Django/DRF practices: a custom user model, JWT authentication, permission-
+protected endpoints, ownership-scoped querysets, serializers, and migrations.
 
 ## Repository layout
 
 ```text
 .
-├── frontend/              # Next.js application
-│   └── src/app/api/       # BFF route handlers
+├── frontend/              # Next.js application and API client
 └── backend/               # Django and Django REST Framework API
     ├── core/              # Projects and tasks
-    └── users/             # User model and auth endpoints
+    └── users/             # User model and cookie-based auth endpoints
 ```
 
 ## Getting started
@@ -97,7 +99,7 @@ In a second terminal:
 cd frontend
 pnpm install
 
-printf 'BACKEND_API_URL=http://localhost:8000/api\n' > .env.local
+printf 'NEXT_PUBLIC_BACKEND_API_URL=http://localhost:8000/api\n' > .env.local
 pnpm dev
 ```
 
@@ -123,8 +125,9 @@ python manage.py test
 
 | Endpoint | Purpose |
 | --- | --- |
-| `POST /api/users/token/` | Obtain access and refresh JWTs |
-| `POST /api/users/token/refresh/` | Refresh an access JWT |
+| `POST /api/users/login/` | Sign in and set HTTP-only auth cookies |
+| `POST /api/users/logout/` | Clear HTTP-only auth cookies |
+| `POST /api/users/token/refresh/` | Refresh the access-token cookie |
 | `GET /api/users/me/` | Get the current user |
 | `/api/projects/` | List and create projects |
 | `/api/projects/:projectId/` | Retrieve, update, or delete a project |
@@ -139,7 +142,7 @@ Screenshots will be added as the interface and core flows stabilise.
 
 ## Roadmap
 
-- [ ] Move authentication-cookie ownership to the Django backend
+- [x] Move authentication-cookie ownership to the Django backend
 - [ ] Add a production database configuration
 - [ ] Add automated backend and frontend tests
 - [ ] Improve board interactions and task workflows
