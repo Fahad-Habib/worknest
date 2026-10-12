@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 
 import Button from "@/components/ui/Button"
 import Input from "@/components/ui/Input"
+import { login } from "@/lib/api/auth"
 
 export default function LoginForm() {
   const router = useRouter()
@@ -21,22 +22,7 @@ export default function LoginForm() {
     setError("")
 
     try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          password,
-        }),
-      })
-
-      if (!response.ok) {
-        setError("Invalid username or password")
-        return
-      }
-
+      await login({ username, password })
       router.push("/dashboard")
       router.refresh()
     } catch {
