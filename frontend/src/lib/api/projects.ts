@@ -1,8 +1,8 @@
 import type { Project } from "@/types/project"
-import { authFetch } from "./authFetch"
+import { apiFetch } from "@/lib/api/client"
 
 export async function getProjects(): Promise<Project[]> {
-  const response = await authFetch("/projects/")
+  const response = await apiFetch("/projects/")
 
   if (!response.ok) {
     throw new Error("Failed to fetch projects")
@@ -14,7 +14,7 @@ export async function getProjects(): Promise<Project[]> {
 export async function createProject(
   projectData: Omit<Project, "id">
 ): Promise<Project> {
-  const response = await authFetch(`/projects/`, {
+  const response = await apiFetch(`/projects/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(projectData),
@@ -28,7 +28,7 @@ export async function createProject(
 }
 
 export async function getProject(projectId: string): Promise<Project | null> {
-  const response = await authFetch(`/projects/${projectId}`)
+  const response = await apiFetch(`/projects/${projectId}`)
 
   if (response.status === 404) {
     return null

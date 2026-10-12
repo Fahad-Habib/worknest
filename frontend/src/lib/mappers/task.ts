@@ -1,4 +1,5 @@
-import { Task, TaskApi } from "@/types/task"
+import type { TaskApi } from "@/types/api/task"
+import type { Task } from "@/types/task"
 
 export default function mapTask(task: TaskApi): Task {
   return {

@@ -1,10 +1,29 @@
+"use client"
+
 import Link from "next/link"
 
-import { getProjects } from "@/lib/server/projects"
-import { getCurrentUser } from "@/lib/server/users"
+import { getProjects } from "@/lib/api/projects"
+import { useEffect, useState } from "react"
+import { Project } from "@/types/project"
+import { useAuth } from "@/components/auth/AuthProvider"
 
-export default async function DashboardPage() {
-  const [user, projects] = await Promise.all([getCurrentUser(), getProjects()])
+export default function DashboardPage() {
+  const { user } = useAuth()
+
+  const [projects, setProjects] = useState<Project[]>([])
+
+  useEffect(() => {
+    async function loadProjects() {
+      try {
+        const data = await getProjects()
+        setProjects(data)
+      } catch (error) {
+        console.error("Failed to load projects", error)
+      }
+    }
+
+    loadProjects()
+  }, [])
 
   const recentProjects = projects.slice(0, 3)
 
@@ -12,7 +31,7 @@ export default async function DashboardPage() {
     <div className="mx-auto max-w-7xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight text-slate-900">
-          Welcome back, {user?.username}
+          Welcome back, {user?.firstName}
         </h1>
 
         <p className="mt-1 text-slate-500">

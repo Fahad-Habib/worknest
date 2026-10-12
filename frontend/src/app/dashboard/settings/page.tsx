@@ -1,9 +1,11 @@
-import { getCurrentUser } from "@/lib/server/users"
+"use client"
+
+import { useAuth } from "@/components/auth/AuthProvider"
 import Button from "@/components/ui/Button"
 import Select from "@/components/ui/Select"
 
-export default async function SettingsPage() {
-  const user = await getCurrentUser()
+export default function SettingsPage() {
+  const { user } = useAuth()
 
   return (
     <div className="mx-auto max-w-4xl">

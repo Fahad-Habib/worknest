@@ -1,9 +1,10 @@
-import { authFetch } from "./authFetch"
-import type { Task, TaskApi } from "@/types/task"
+import type { Task } from "@/types/task"
+import type { TaskApi } from "@/types/api/task"
 import mapTask from "@/lib/mappers/task"
+import { apiFetch } from "@/lib/api/client"
 
-export async function getProjectTasks(projectId: string): Promise<Task[]> {
-  const response = await authFetch(`/projects/${projectId}/tasks/`)
+export async function getTasks(projectId: string): Promise<Task[]> {
+  const response = await apiFetch(`/projects/${projectId}/tasks/`)
 
   if (!response.ok) {
     throw new Error("Failed to fetch tasks")
@@ -18,7 +19,7 @@ export async function createTask(
   projectId: number,
   taskData: Omit<Task, "id" | "projectId">
 ): Promise<Task> {
-  const response = await authFetch(`/projects/${projectId}/tasks/`, {
+  const response = await apiFetch(`/projects/${projectId}/tasks/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(taskData),
@@ -38,7 +39,7 @@ export async function updateTask(
   projectId: number,
   taskData: Partial<Omit<Task, "id" | "projectId">>
 ): Promise<Task> {
-  const response = await authFetch(`/projects/${projectId}/tasks/${taskId}/`, {
+  const response = await apiFetch(`/projects/${projectId}/tasks/${taskId}/`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(taskData),
@@ -57,7 +58,7 @@ export async function deleteTask(
   taskId: number,
   projectId: number
 ): Promise<void> {
-  const response = await authFetch(`/projects/${projectId}/tasks/${taskId}/`, {
+  const response = await apiFetch(`/projects/${projectId}/tasks/${taskId}/`, {
     method: "DELETE",
   })
 
